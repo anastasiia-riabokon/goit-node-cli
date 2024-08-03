@@ -8,6 +8,8 @@ const __dirname = path.dirname(__filename);
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 
+const updJSON = (item) => fs.writeFile(contactsPath, JSON.stringify(item, null, 2));
+
 export async function listContacts() {
   const data = await fs.readFile(contactsPath, "utf-8");
   return JSON.parse(data);
@@ -29,7 +31,7 @@ export async function addContact(name, email, phone) {
   };
 
   contacts.push(newContact);
-  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  await updJSON(contacts);
 
   return newContact;
 }
@@ -44,7 +46,7 @@ export async function removeContact(contactId) {
 
   const result = contacts.filter((contact) => contact.id !== contactInPast.id);
 
-  await fs.writeFile(contactsPath, JSON.stringify(result, null, 2));
+  await updJSON(result);
 
   return contactInPast;
 }
