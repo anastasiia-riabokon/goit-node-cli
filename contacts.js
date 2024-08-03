@@ -33,3 +33,18 @@ export async function addContact(name, email, phone) {
 
   return newContact;
 }
+
+export async function removeContact(contactId) {
+  const contacts = await listContacts();
+  const index = contacts.findIndex((contact) => contact.id === contactId);
+
+  if (index === -1) return null;
+
+  const contactInPast = contacts[index];
+
+  const result = contacts.filter((contact) => contact.id !== contactInPast.id);
+
+  await fs.writeFile(contactsPath, JSON.stringify(result, null, 2));
+
+  return contactInPast;
+}
