@@ -20,7 +20,8 @@ async function invokeAction({action, id, name, email, phone}) {
       break;
 
     case "get":
-      // ... id
+      const wantedContact = await servicesContacts.getContactById(id);
+      console.log(wantedContact);
       break;
 
     case "add":
