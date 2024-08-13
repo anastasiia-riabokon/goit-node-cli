@@ -1,10 +1,8 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import {randomUUID} from "node:crypto";
-import {fileURLToPath} from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = import.meta.dirname;
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 
@@ -42,11 +40,9 @@ export async function removeContact(contactId) {
 
   if (index === -1) return null;
 
-  const contactInPast = contacts[index];
-
-  const result = contacts.filter((contact) => contact.id !== contactInPast.id);
+  const [result] = contacts.splice(index, 1);
 
   await updJSON(result);
 
-  return contactInPast;
+  return result;
 }
